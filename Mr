@@ -1,0 +1,334 @@
+<!DOCTYPE html>  <html lang="uz">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>Matematika O‘yini</title>  
+<style>  
+body {  
+  margin: 0;  
+  font-family: Arial, sans-serif;  
+  color: #000;  
+  text-align: center;  
+  display: flex;  
+  justify-content: center;  
+  align-items: center;  
+  min-height: 100vh;  
+  background: #f0f0f0;  
+}  
+button {  
+  padding: 12px 20px;  
+  font-size: 18px;  
+  margin: 5px;  
+  border: 2px solid #000;  
+  background: white;  
+  border-radius: 10px;  
+  cursor: pointer;  
+  transition: 0.3s;  
+}  
+button:hover { background: #000; color: #fff; }  
+.hidden { display: none; }  
+.mode-section { margin: 10px; }  
+.modeBtn {  
+  padding: 8px 12px;  
+  margin: 3px;  
+  border: 2px solid #000;  
+  border-radius: 8px;  
+  background: white;  
+  cursor: pointer;  
+}  
+.modeBtn.active { background: black; color: white; }  #game {
+width: 90%;
+max-width: 500px;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+.oyinchi {
+width: 100%;
+padding: 15px;
+display: flex;
+flex-direction: column;
+align-items: center;
+border: 2px solid #fff;
+border-radius: 10px;
+background: rgba(0,0,0,0.15);
+position: relative;
+margin: 5px 0;
+}
+.oyinchi2 { transform: rotate(180deg); }
+h2 { margin: 5px 0; }
+.savol { font-size: 22px; margin: 10px 0; text-align: center; word-break: break-word; }
+.javoblar {
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+gap: 5px;
+padding-bottom:5px;
+}
+button.javob {
+padding: 8px 12px;
+font-size: 28px;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+background: #ff9800;
+color: white;
+min-width: 70px;
+max-width: 100%;
+height: 50px;
+flex: 1 1 auto;
+display: flex;
+justify-content: center;
+align-items: center;
+white-space: nowrap;
+}
+.savolNo {
+position: absolute;
+top: 5px;
+right: 8px;
+font-size: 12px;
+color: #000;
+}
+.progress-container {
+width: 100%;
+height: 12px;
+background: #ddd;
+border-radius: 5px;
+margin: 5px 0;
+display: flex;
+overflow: hidden;
+}
+.progress-segment {
+height: 100%;
+width: 0%;
+transition: width 0.3s;
+}
+.vaqt-progress {
+width: 100%;
+height: 5px;
+background: #3498db;
+transition: width 0.1s linear;
+margin-bottom:5px;
+}
+#modal {
+position: fixed;
+top:0; left:0; right:0; bottom:0;
+background: rgba(0,0,0,0.7);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index: 100;
+display:none;
+}
+#modalContent {
+background:white;
+padding:20px;
+border-radius:12px;
+text-align:center;
+}
+#modal button { background:#27ae60; color:white; padding:10px 20px; border:none; border-radius:8px; font-size:18px; cursor:pointer;}
+</style>
+
+</head>  
+<body>  <div id="sahifa1">  
+  <h1>Matematika O‘yini</h1>  
+  <button id="boshlashBtn">Boshlash</button>  
+  <button id="modesBtn">Rejimlar</button>    <div id="modeScreen" class="hidden">  
+    <h2>Rejimlar</h2>  
+    <div class="mode-section">  
+      <p><b>Savollar soni:</b></p>  
+      <button class="modeBtn" data-type="count" data-value="10">10</button>  
+      <button class="modeBtn" data-type="count" data-value="20">20</button>  
+      <button class="modeBtn" data-type="count" data-value="30">30</button>  
+    </div>  
+    <div class="mode-section">  
+      <p><b>Raqamlar soni:</b></p>  
+      <button class="modeBtn" data-type="digits" data-value="1">1</button>  
+      <button class="modeBtn" data-type="digits" data-value="2">2</button>  
+      <button class="modeBtn" data-type="digits" data-value="3">3</button>  
+    </div>  
+    <div class="mode-section">  
+      <p><b>Vaqt (sekund):</b></p>  
+      <button class="modeBtn" data-type="time" data-value="5">5</button>  
+      <button class="modeBtn" data-type="time" data-value="10">10</button>  
+      <button class="modeBtn" data-type="time" data-value="15">15</button>  
+    </div>  
+    <div class="mode-section">  
+      <button id="tasodifBtn" class="modeBtn">Tasodifiy</button>  
+    </div>  
+  </div>  
+</div>  <div id="sahifa2" class="hidden">  
+  <div id="game">  
+    <div class="oyinchi oyinchi2">  
+      <h2>2-O‘yinchi</h2>  
+      <p class="savolNo" id="savolNo2">No 1/10</p>  
+      <div class="vaqt-progress" id="vaqtProg2"></div>  
+      <div class="progress-container" id="progress2"></div>  
+      <div class="savol" id="savol2">Savol...</div>  
+      <div class="javoblar" id="opts2"></div>  
+    </div>  <div class="oyinchi oyinchi1">  
+  <h2>1-O‘yinchi</h2>  
+  <p class="savolNo" id="savolNo1">No 1/10</p>  
+  <div class="vaqt-progress" id="vaqtProg1"></div>  
+  <div class="progress-container" id="progress1"></div>  
+  <div class="savol" id="savol1">Savol...</div>  
+  <div class="javoblar" id="opts1"></div>  
+</div>
+
+  </div>  
+</div>  <div id="modal">  
+  <div id="modalContent">  
+    <h2>O‘yin tugadi!</h2>  
+    <p id="modalText"></p>  
+    <button onclick="yanaOyna()">Yana o‘ynash</button>  
+  </div>  
+</div>  <script>  
+let sozlamalar = {count:10,digits:1,time:5};  
+const sahifa1 = document.getElementById("sahifa1");  
+const sahifa2 = document.getElementById("sahifa2");  
+const boshlashBtn = document.getElementById("boshlashBtn");  
+const modesBtn = document.getElementById("modesBtn");  
+const modeScreen = document.getElementById("modeScreen");  
+const tasodifBtn = document.getElementById("tasodifBtn");  
+const modal = document.getElementById("modal");  
+const modalText = document.getElementById("modalText");  
+  
+modesBtn.onclick = ()=>{ modeScreen.classList.toggle("hidden"); };  
+  
+document.querySelectorAll(".modeBtn").forEach(btn=>{  
+  btn.onclick = ()=>{  
+    const type = btn.dataset.type;  
+    if(!type) return;  
+    document.querySelectorAll(`.modeBtn[data-type="${type}"]`).forEach(b=>b.classList.remove("active"));  
+    btn.classList.add("active");  
+    sozlamalar[type] = parseInt(btn.dataset.value);  
+  };  
+});  
+  
+tasodifBtn.onclick = ()=>{  
+  const counts = [10,20,30];  
+  const digits = [1,2,3];  
+  const times = [5,10,15];  
+  sozlamalar.count = counts[Math.floor(Math.random()*counts.length)];  
+  sozlamalar.digits = digits[Math.floor(Math.random()*digits.length)];  
+  sozlamalar.time = times[Math.floor(Math.random()*times.length)];  
+  document.querySelectorAll('.modeBtn').forEach(b => b.classList.remove('active'));  
+  boshlash(true);  
+};  
+  
+function yaratOyinchi(id){ return {id,correct:0,wrong:0,current:0,total:sozlamalar.count,time:sozlamalar.time,timerInt:null,finished:false}; }  
+let oyinchi1,oyinchi2,oyinIshlayapti=false;  
+  
+function tasodifiyRaqam(d){ const min=d===1?1:Math.pow(10,d-1); const max=Math.pow(10,d)-1; return Math.floor(Math.random()*(max-min+1))+min; }  
+  
+function savolYarat(){  
+  const a=tasodifiyRaqam(sozlamalar.digits);  
+  const b=tasodifiyRaqam(sozlamalar.digits);  
+  const javob=a+b;  
+  let v=[javob];  
+  while(v.length<4){  
+    let delta=Math.floor(Math.random()*3)+1;  
+    let sign=Math.random()<0.5?-1:1;  
+    let val=javob+sign*delta;  
+    if(!v.includes(val)) v.push(val);  
+  }  
+  v.sort(()=>Math.random()-0.5);  
+  return {q:`${a}+${b}`,a:javob,v:v};  
+}  
+  
+function keyingiSavol(o){  
+  if(!oyinIshlayapti) return;  
+  const progContainer=document.getElementById(`progress${o.id}`);  
+  const vaqtProg=document.getElementById(`vaqtProg${o.id}`);  
+  if(!progContainer.children.length){  
+    for(let i=0;i<o.total;i++){  
+      const seg=document.createElement("div");  
+      seg.className="progress-segment";  
+      seg.style.width=(100/o.total)+"%";  
+      seg.style.background="#ddd";  
+      progContainer.appendChild(seg);  
+    }  
+  }  
+  if(o.current>=o.total){  
+    o.finished=true;  
+    document.getElementById(`savol${o.id}`).textContent="Tugatildi!";  
+    document.getElementById(`opts${o.id}`).innerHTML="";  
+    document.getElementById(`savolNo${o.id}`).textContent="";  
+    vaqtProg.style.width="0%";  
+    if(oyinchi1.finished && oyinchi2.finished){  
+      modalText.innerHTML=`1-O‘yinchi: ${oyinchi1.correct}✅ ${oyinchi1.wrong}❌<br>2-O‘yinchi: ${oyinchi2.correct}✅ ${oyinchi2.wrong}❌`;  
+      modal.style.display="flex";  
+    }  
+    return;  
+  }  
+  o.current++;  
+  const s=savolYarat();  
+  const sEl=document.getElementById(`savol${o.id}`);  
+  const oEl=document.getElementById(`opts${o.id}`);  
+  const sNoEl=document.getElementById(`savolNo${o.id}`);  
+  sNoEl.textContent=`No ${o.current}/${o.total}`;  
+  sEl.textContent=`${s.q} = ?`;  
+  oEl.innerHTML="";  
+  let timeLeft=sozlamalar.time;  
+  vaqtProg.style.width="100%";  
+  clearInterval(o.timerInt);  
+  
+  o.timerInt=setInterval(()=>{  
+    timeLeft--;  
+    vaqtProg.style.width=(timeLeft/sozlamalar.time*100)+"%";  
+    if(timeLeft<=0){  
+      clearInterval(o.timerInt);  
+      o.wrong++;  
+      progContainer.children[o.current-1].style.background="red";  
+      keyingiSavol(o);  
+    }  
+  },1000);  
+  
+  ["A","B","C","D"].forEach((l,i)=>{  
+    const btn=document.createElement("button");  
+    btn.className="javob";  
+    btn.textContent=l+". "+s.v[i];  
+    btn.onclick=()=>{  
+      clearInterval(o.timerInt);  
+      if(s.v[i]===s.a){  
+        o.correct++;  
+        progContainer.children[o.current-1].style.background="green";  
+      } else {  
+        o.wrong++;  
+        progContainer.children[o.current-1].style.background="red";  
+      }  
+      keyingiSavol(o);  
+    };  
+    oEl.appendChild(btn);  
+  });  
+}  
+  
+function boshlash(tasodif=false){  
+  sahifa1.classList.add("hidden");  
+  sahifa2.classList.remove("hidden");  
+  oyinchi1=yaratOyinchi(1);  
+  oyinchi2=yaratOyinchi(2);  
+  oyinIshlayapti=true;  
+  keyingiSavol(oyinchi1);  
+  keyingiSavol(oyinchi2);  
+  if(tasodif) alert(`Tasodifiy Rejim: ${sozlamalar.count} savol, ${sozlamalar.digits} xonali, ${sozlamalar.time} sek`);  
+}  
+  
+boshlashBtn.onclick = () => boshlash(false);  
+  
+function yanaOyna(){  
+  modal.style.display="none";  
+  oyinIshlayapti=false;  
+  oyinchi1=null; oyinchi2=null;  
+  ["1","2"].forEach(id=>{  
+    document.getElementById(`savol${id}`).textContent="Savol...";  
+    document.getElementById(`opts${id}`).innerHTML="";  
+    document.getElementById(`savolNo${id}`).textContent="";  
+    document.getElementById(`progress${id}`).innerHTML="";  
+    document.getElementById(`vaqtProg${id}`).style.width="0%";  
+  });  
+  sahifa1.classList.remove("hidden");  
+  sahifa2.classList.add("hidden");  
+}  
+</script>  </body>  
+</html>
